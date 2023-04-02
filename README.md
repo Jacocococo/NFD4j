@@ -1,12 +1,12 @@
 # Native File Dialog For Java
 
-A fork of \[mlabbe/nativefiledialog\](<https://github.com/mlabbe/nativefiledialog>) that adds JNI bindings for Java. When prompted to choose a file, the library will try to load the platform's native file dialog, but if the native shared object file fails to load, it will fall back to a JFileChooser.
+A fork of [mlabbe/nativefiledialog](<https://github.com/mlabbe/nativefiledialog>) that adds JNI bindings for Java. When prompted to choose a file, the library will try to load the platform's native file dialog, but if the native shared object file fails to load, it will fall back to a JFileChooser.
 
-\*Note: This has currently only been tested with the standard Linux build on x64, but it will hopefully work on other platforms as well.\*
+*Note: This has currently only been tested with the standard Linux build on x64, but it will hopefully work on other platforms as well.*
 
 # Example Usage
 
-```C
+```java
 import com.jacoco.nfd.NativeFileDialog;
 
 ...
@@ -24,7 +24,7 @@ String directory = NativeFileDialog.getPath("/home/user/Pictures");
 String file = NativeFileDialog.saveFile(null, "doc,docx;odf;pdf");
 ```
 
-Java-docs are included in \[NativeFileDialog.java\](java/com/jacoco/nfd/NativeFileDialog.java)
+Java-docs are included in [NativeFileDialog.java](java/com/jacoco/nfd/NativeFileDialog.java)
 
 # Overriding Shared Object Path
 
@@ -32,14 +32,14 @@ The library will automatically search for a shared object file that matches the 
 
 Example:
 
-```
+```java
 // Setting the property to usr lib directory
 System.setProperty("nfd.libPath", "/usr/lib/libnfd4j.so");
 ```
 
 The library is read when anything in the NativeFileDialog class is first initialized. Therefore the following will not work, as the library has already been read when the property is set.
 
-```
+```java
 NativeFileDialog.getFile("", "");
 // Will NOT work
 System.setProperty("nfd.libPath", "/usr/lib/libnfd4j.so");
@@ -55,11 +55,11 @@ System.setProperty("nfd.libPath", "/usr/lib/libnfd4j.so");
 
 This project uses GCC and Javac for building.
 
-To build it, you first need to enter `build/gmake2_<platform>`  and run make from there. For more instructions, refer to \[Upstream\](<https://github.com/mlabbe/nativefiledialog/blob/master/README.md#building>).
+To build it, you first need to enter `build/gmake2_<platform>`  and run make from there. For more instructions, refer to [Upstream](<https://github.com/mlabbe/nativefiledialog/blob/master/README.md#building>). While upstream supports other compilers, the following build scripts only work with GCC.
 
-After building the static library from upstream, enter `java/build` and run the build script that matches your platform. You can use `--arch="<build_architecture>"`  on Linux and Mac or `--arch "<build_architecture>"`  on Windows to select an architecture other than the default (which is x64 on Linux and Windows, and ARM64 on Mac). While upstream supports other compilers, the following build scripts only work with GCC.
+After building the static library from upstream, enter `java/build` and run the build script that matches your platform. You can use `--arch="<build_architecture>"`  on Linux and Mac or `--arch "<build_architecture>"`  on Windows to select an architecture other than the default (which is x64 on Linux and Windows, and ARM64 on Mac).
 
-\*Note: The only build script that has been tested is `build_linux.sh`  on the x64 architecture. Other build scripts are not guaranteed to work but will hopefully at least act as a guide. If you manage to build the shared object on another platform, please let me know so I can update this repository.\*
+*Note: The only build script that has been tested is `build_linux.sh`  on the x64 architecture. Other build scripts are not guaranteed to work but will hopefully at least act as a guide. If you manage to build the shared object on another platform, please let me know so I can update this repository.*
 
 ## File Filter Syntax
 
