@@ -2,11 +2,6 @@
 --
 -- This can be ran directly, but commonly, it is only run
 -- by package maintainers.
---
--- IMPORTANT NOTE: premake5 alpha 9 does not handle this script
--- properly.  Build premake5 from Github master, or, presumably,
--- use alpha 10 in the future.
-
 
 newoption {
    trigger     = "linux_backend",
@@ -34,9 +29,9 @@ workspace "NativeFileDialog"
   --
   -- Add it back in here to build for legacy systems.
   filter "system:macosx"
-    platforms {"x64"}
+    platforms {"x64", "ARM64"}
   filter "system:windows or system:linux"
-    platforms {"x64", "x86"}
+    platforms {"x64", "x86", "ARM64"}
   
 
   objdir(path.join(build_dir, "obj/"))
@@ -47,6 +42,9 @@ workspace "NativeFileDialog"
   
   filter "configurations:x64"
     architecture "x86_64"
+
+  filter "configurations:ARM64"
+    architecture "ARM64"
 
   -- debug/release filters
   filter "configurations:Debug"
@@ -72,13 +70,13 @@ workspace "NativeFileDialog"
 
     warnings "extra"
 
+    filter "action:gmake2"
+        buildoptions {"-fPIC", "-fno-exceptions"}
+
     -- system build filters
     filter "system:windows"
       language "C++"
       files {root_dir.."src/nfd_win.cpp"}
-
-    filter {"action:gmake or action:xcode4"}
-      buildoptions {"-fno-exceptions"}
 
     filter "system:macosx"
       language "C"
@@ -94,10 +92,6 @@ workspace "NativeFileDialog"
       language "C"
       files {root_dir.."src/nfd_zenity.c"}
 
-
-    -- visual studio filters
-    filter "action:vs*"
-      defines { "_CRT_SECURE_NO_WARNINGS" }      
 
 local make_test = function(name)
   project(name)
@@ -143,7 +137,7 @@ local make_test = function(name)
 
 
 
-    filter {"action:gmake", "system:windows"}
+    filter {"action:gmake2", "system:windows"}
       links {"ole32", "uuid"}
 
 end
@@ -188,12 +182,10 @@ newaction
          os.execute("rm "..premake_path)
       end
       
-      premake_do_action("vs2010", "windows", false,{})
-      premake_do_action("xcode4", "macosx", false,{})
-      premake_do_action("gmake", "linux", true,{})
-      premake_do_action("gmake", "linux", true,{linux_backend='zenity'})
-      premake_do_action("gmake", "macosx", true,{})
-      premake_do_action("gmake", "windows", true,{})
+      premake_do_action("gmake2", "linux", true,{})
+      premake_do_action("gmake2", "linux", true,{linux_backend='zenity'})
+      premake_do_action("gmake2", "macosx", true,{})
+      premake_do_action("gmake2", "windows", true,{})
    end
 }
 
@@ -233,12 +225,12 @@ newaction
             "lib",
             "test",
             "makefiles",
-            "gmake",
+            "gmake2",
             "vs2010",
             "xcode4",
-            "gmake_linux",
-            "gmake_macosx",
-            "gmake_windows"
+            "gmake2_linux",
+            "gmake2_macosx",
+            "gmake2_windows"
         }
 
         for i,v in ipairs( directories_to_delete ) do
