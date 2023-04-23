@@ -169,6 +169,8 @@ nfdresult_t NFD_OpenDialog( const nfdchar_t *filterList,
                             const nfdchar_t *defaultPath,
                             nfdchar_t **outPath )
 {    
+    gdk_threads_enter();
+
     GtkWidget *dialog;
     nfdresult_t result;
 
@@ -218,6 +220,8 @@ nfdresult_t NFD_OpenDialog( const nfdchar_t *filterList,
     gtk_widget_destroy(dialog);
     WaitForCleanup();
 
+    gdk_threads_leave();
+
     return result;
 }
 
@@ -226,6 +230,8 @@ nfdresult_t NFD_OpenDialogMultiple( const nfdchar_t *filterList,
                                     const nfdchar_t *defaultPath,
                                     nfdpathset_t *outPaths )
 {
+    gdk_threads_enter();
+
     GtkWidget *dialog;
     nfdresult_t result;
 
@@ -266,6 +272,8 @@ nfdresult_t NFD_OpenDialogMultiple( const nfdchar_t *filterList,
     gtk_widget_destroy(dialog);
     WaitForCleanup();
 
+    gdk_threads_leave();
+
     return result;
 }
 
@@ -273,6 +281,8 @@ nfdresult_t NFD_SaveDialog( const nfdchar_t *filterList,
                             const nfdchar_t *defaultPath,
                             nfdchar_t **outPath )
 {
+    gdk_threads_enter();
+
     GtkWidget *dialog;
     nfdresult_t result;
 
@@ -321,6 +331,8 @@ nfdresult_t NFD_SaveDialog( const nfdchar_t *filterList,
     WaitForCleanup();
     gtk_widget_destroy(dialog);
     WaitForCleanup();
+
+    gdk_threads_leave();
     
     return result;
 }
@@ -328,6 +340,8 @@ nfdresult_t NFD_SaveDialog( const nfdchar_t *filterList,
 nfdresult_t NFD_PickFolder(const nfdchar_t *defaultPath,
     nfdchar_t **outPath)
 {
+    gdk_threads_enter();
+
     GtkWidget *dialog;
     nfdresult_t result;
 
@@ -374,6 +388,8 @@ nfdresult_t NFD_PickFolder(const nfdchar_t *defaultPath,
     WaitForCleanup();
     gtk_widget_destroy(dialog);
     WaitForCleanup();
+
+    gdk_threads_leave();
     
     return result;
 }
